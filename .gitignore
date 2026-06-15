@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (this is a plugin/marketplace repo, not an npm project)
+node_modules/
+package-lock.json
+
+# Local env / secrets — never commit a DRA key
+.env
+.env.local
+*.local

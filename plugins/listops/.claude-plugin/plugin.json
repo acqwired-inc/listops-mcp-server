@@ -1,0 +1,15 @@
+{
+  "name": "listops",
+  "version": "0.1.0",
+  "description": "Investment-grade company list building: MECE source planning, parallel gathering, DRA enrichment, thesis scoring, down-selection, QA judging, and contact enrichment.",
+  "author": {
+    "name": "Acqwired"
+  },
+  "keywords": [
+    "list-building",
+    "company-research",
+    "deal-sourcing",
+    "enrichment",
+    "private-equity"
+  ]
+}

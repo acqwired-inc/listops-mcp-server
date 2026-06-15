@@ -1,0 +1,17 @@
+{
+  "name": "acqwired",
+  "owner": {
+    "name": "Acqwired"
+  },
+  "metadata": {
+    "description": "Acqwired deal-sourcing and research tools for Claude Code",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "listops",
+      "source": "./plugins/listops",
+      "description": "Investment-grade company list building: MECE source planning, parallel gathering, DRA enrichment, thesis scoring, down-selection, QA judging, and contact enrichment."
+    }
+  ]
+}
