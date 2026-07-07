@@ -1,24 +1,36 @@
-# ListOps — Acqwired DRA plugin for Claude Code
+# ListOps — Acqwired DRA plugin for Claude Code & Claude Desktop
 
-Investment-grade company list building, in Claude Code. Turn a one-line ask —
+Investment-grade company list building. Turn a one-line ask —
 *"commercial landscaping companies in Texas, owner-operated, >$5M, no PE"* — into
 a screened, enriched, thesis-ranked list, powered by the
 Acqwired **Deep Research API (DRA)**.
 
-## Install
+## Install — Claude Desktop
+
+1. **Customize → Plugins → Add marketplace** — search for `acqwired-inc/listops-mcp-server`, browse to **Personal**, click **+**.
+2. On the plugin page, find **dra-research** under **Connectors** and click it.
+3. A browser window opens at **platform.acqwired.com/connect** — paste your `dra_…` API key and click **Authorize**.
+4. Claude Desktop stores the token. Run `/listops:status` to confirm.
+
+> **Seeing "Contact an organization owner to install connectors"?**  
+> Your account is on a managed org plan. Ask your org admin to enable connector
+> installation in Settings → Organization → Permissions, or use a personal
+> Claude Desktop account.
+
+## Install — Claude Code (CLI)
 
 ```bash
 # 1. add this marketplace
 /plugin marketplace add acqwired-inc/listops-mcp-server
 # 2. install the plugin
 /plugin install listops@acqwired
-# 3. connect with your DRA API key (from the Acqwired dashboard → Settings → API key)
+# 3. connect with your DRA API key
 /listops:connect dra_your_key_here
 # 4. restart Claude Code, then:
 /listops:status
 ```
 
-That's it. `/listops:build <your thesis>` runs the full pipeline; `/listops:update`
+`/listops:build <your thesis>` runs the full pipeline; `/listops:update`
 keeps the skills current.
 
 ## How it works — thin bootstrap, key-gated skills
