@@ -176,10 +176,27 @@ def cmd_set(args):
     key = validate_key(args.key)
     path = settings_path()
     data = load_settings(path)
+
+    # Store key in env (legacy / fallback)
     env = data.get("env") if isinstance(data.get("env"), dict) else {}
     existing = env.get(ENV_VAR)
     env[ENV_VAR] = key
     data["env"] = env
+
+    # Also write the MCP server config with the auth header into settings.json so
+    # Claude Code uses the stored key directly (the plugin .mcp.json has no static
+    # header, allowing Claude Desktop to use OAuth instead).
+    mcp_servers = data.get("mcpServers") if isinstance(data.get("mcpServers"), dict) else {}
+    base = mcp_base_url() or "https://api.acqwired.com/v1"
+    mcp_servers["dra-research"] = {
+        "type": "http",
+        "url": f"{base}/mcp",
+        "headers": {
+            "Authorization": f"Bearer {key}",
+        },
+    }
+    data["mcpServers"] = mcp_servers
+
     write_json_atomic(path, data)
     print(f"{'Updated' if existing else 'Saved'} {ENV_VAR}={mask(key)} in {path}")
     if os.environ.get(ENV_VAR) and os.environ[ENV_VAR] != key:
@@ -218,15 +235,29 @@ def cmd_check(args):
 def cmd_clear(args):
     path = settings_path()
     data = load_settings(path)
+    changed = False
+
     env = data.get("env")
     if isinstance(env, dict) and ENV_VAR in env:
         del env[ENV_VAR]
         if not env:
             data.pop("env", None)
-        write_json_atomic(path, data)
+        changed = True
         print(f"Removed {ENV_VAR} from {path}.")
     else:
         print(f"{ENV_VAR} was not set in {path}; nothing to do.")
+
+    # Also remove the MCP server auth config written by cmd_set
+    mcp = data.get("mcpServers")
+    if isinstance(mcp, dict) and "dra-research" in mcp:
+        del mcp["dra-research"]
+        if not mcp:
+            data.pop("mcpServers", None)
+        changed = True
+        print("Removed dra-research MCP server config from settings.json.")
+
+    if changed:
+        write_json_atomic(path, data)
     if args.purge:
         cfg = config_dir()
         removed = 0
