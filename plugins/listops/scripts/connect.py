@@ -169,16 +169,21 @@ def install_pack(key):
         content = f["content"].replace(PLACEHOLDER, skills_base)
         write_text_atomic(cfg / f["path"], content)
     write_text_atomic(cfg / VERSION_FILE, version)
-    # The curated PE blocklist moved server-side (applied at discovery) and no
-    # longer ships in the pack — remove the legacy local copy if an older
-    # install left one behind.
-    legacy = cfg / "skills" / "list-operations" / "assets" / "pe-platforms.txt"
-    if legacy.exists() and not any(f["path"] == "skills/list-operations/assets/pe-platforms.txt" for f in files):
-        try:
-            legacy.unlink()
-            print("Removed legacy local PE blocklist (now applied server-side at discovery).")
-        except OSError:
-            pass
+    # Files retired from the pack — remove local copies an older install left
+    # behind (the installer overwrites but never prunes).
+    LEGACY = {
+        "skills/list-operations/assets/pe-platforms.txt": "PE blocklist (now applied server-side at discovery)",
+        "commands/listops/conflict-check.md": "conflict-check command (renamed to /listops:signoff)",
+    }
+    served = {f["path"] for f in files}
+    for rel, why in LEGACY.items():
+        target = cfg / rel
+        if target.exists() and rel not in served:
+            try:
+                target.unlink()
+                print(f"Removed legacy {why}.")
+            except OSError:
+                pass
     print(f"Installed {len(files)} ListOps files (pack {version}) under {cfg}")
 
 
