@@ -7,7 +7,7 @@ a screened, enriched, thesis-ranked list, powered by the
 
 ## Install — Claude Desktop
 
-1. **Customize → Plugins → Add marketplace** — search for `acqwired-inc/listops-mcp-server`, browse to **Personal**, click **+**.
+1. **Customize → Plugins → Add marketplace** — search for `acqwired-inc/listops`, browse to **Personal**, click **+**.
 2. On the plugin page, find **dra-research** under **Connectors** and click it.
 3. A browser window opens at **platform.acqwired.com/connect** — paste your `dra_…` API key and click **Authorize**.
 4. Claude Desktop stores the token. Run `/listops:status` to confirm.
@@ -21,7 +21,7 @@ a screened, enriched, thesis-ranked list, powered by the
 
 ```bash
 # 1. add this marketplace
-/plugin marketplace add acqwired-inc/listops-mcp-server
+/plugin marketplace add acqwired-inc/listops
 # 2. install the plugin
 /plugin install listops@acqwired
 # 3. connect with your Acqwired API key (starts with dra_)
